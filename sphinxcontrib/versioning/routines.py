@@ -113,17 +113,20 @@ def pre_build(local_root, versions):
     :rtype: str
     """
     log = logging.getLogger(__name__)
-    exported_root = TempDir(True).name
+    # exported_root = TempDir(True).name
+    exported_root = os.getcwd()
 
     # Extract all.
     for sha in {r['sha'] for r in versions.remotes}:
-        target = os.path.join(exported_root, sha)
+        # target = os.path.join(exported_root, sha)
+        target = os.getcwd()
         log.debug('Exporting %s to temporary directory.', sha)
         export(local_root, sha, target)
 
     # Build root.
     remote = versions[Config.from_context().root_ref]
-    with TempDir() as temp_dir:
+#     with TempDir() as temp_dir:
+    with os.getcwd() as temp_dir:
         log.debug('Building root (before setting root_dirs) in temporary directory: %s', temp_dir)
         source = os.path.dirname(os.path.join(exported_root, remote['sha'], remote['conf_rel_path']))
         build(source, temp_dir, versions, remote['name'], True)
