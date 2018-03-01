@@ -125,12 +125,14 @@ def pre_build(local_root, versions):
 
     # Build root.
     remote = versions[Config.from_context().root_ref]
+    temp_dir = os.getcwd()
 #     with TempDir() as temp_dir:
-    with os.getcwd() as temp_dir:
-        log.debug('Building root (before setting root_dirs) in temporary directory: %s', temp_dir)
-        source = os.path.dirname(os.path.join(exported_root, remote['sha'], remote['conf_rel_path']))
-        build(source, temp_dir, versions, remote['name'], True)
-        existing = os.listdir(temp_dir)
+#    with os.getcwd() as temp_dir:
+    log.debug('Now building in root dir *hopefully*')
+    log.debug('Building root (before setting root_dirs) in temporary directory: %s', temp_dir)
+    source = os.path.dirname(os.path.join(exported_root, remote['sha'], remote['conf_rel_path']))
+    build(source, temp_dir, versions, remote['name'], True)
+    existing = os.listdir(temp_dir)
 
     # Define root_dir for all versions to avoid file name collisions.
     for remote in versions.remotes:
